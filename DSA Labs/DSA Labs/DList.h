@@ -34,12 +34,12 @@ NOTE: If the unit test is not on, that code will not be compiled!
 
 
 // Main toggle
-#define LAB_3	0
+#define LAB_3	1
 
 // Individual unit test toggles
-#define LAB3_CTOR						0
-#define LAB3_NODE_CTOR_DEFAULT			0
-#define LAB3_NODE_CTOR					0
+#define LAB3_CTOR						1	//PASS
+#define LAB3_NODE_CTOR_DEFAULT			1	//PASS
+#define LAB3_NODE_CTOR					1	//PASS
 #define LAB3_ADDHEAD_EMPTY				0
 #define LAB3_ADDHEAD					0
 #define LAB3_ADDTAIL_EMPTY				0
@@ -76,6 +76,10 @@ class DList {
 
 		Node(const Type& _data, Node* _next = nullptr, Node* _prev = nullptr) {
 			// TODO: Implement this method
+
+			data = _data;
+			next = _next;
+			prev = _prev;
 
 		}
 	};
@@ -217,6 +221,11 @@ public:
 	//		Creates a new empty linked list
 	DList() {
 		// TODO: Implement this method
+
+		mHead = nullptr;
+		mTail = nullptr;
+		mSize = 0;
+
 
 	}
 

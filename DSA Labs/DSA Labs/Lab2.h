@@ -71,7 +71,7 @@ inline bool IsPalindromeNumber(unsigned int _num) {
 
 	//int j = 0;
 
-	for (int i = forward.size() - 1; i >= 0; i--)
+	for (int i = (int)forward.size() - 1; i >= 0; i--)
 	{
 		reverse.push_back(forward[i]);
 
