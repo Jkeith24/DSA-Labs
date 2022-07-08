@@ -40,10 +40,10 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB3_CTOR						1	//PASS
 #define LAB3_NODE_CTOR_DEFAULT			1	//PASS
 #define LAB3_NODE_CTOR					1	//PASS
-#define LAB3_ADDHEAD_EMPTY				0
-#define LAB3_ADDHEAD					0
-#define LAB3_ADDTAIL_EMPTY				0
-#define LAB3_ADDTAIL					0
+#define LAB3_ADDHEAD_EMPTY				1	//PASS
+#define LAB3_ADDHEAD					1	//PASS
+#define LAB3_ADDTAIL_EMPTY				1	//PASS
+#define LAB3_ADDTAIL					1	//PASS
 #define LAB3_CLEAR						0
 #define LAB3_DTOR						0
 #define LAB3_ITER_BEGIN					0
@@ -239,7 +239,7 @@ public:
 	// Copy constructor
 	//		Used to initialize one object to another
 	// In:	_copy			The object to copy from
-	DList(const DList& _copy)  {
+	DList(const DList& _copy) {
 		// TODO: Implement this method
 	}
 
@@ -266,8 +266,26 @@ public:
 	// Add a piece of data to the front of the list
 	//
 	// In:	_data			The object to add to the list
+
 	void AddHead(const Type& _data) {
 		// TODO: Implement this method
+
+		
+
+		if (mHead == nullptr && mTail == nullptr)
+		{
+			Node* newNode = new Node(_data);
+			mHead = newNode;
+			mTail = newNode;
+
+		}else if (mHead != nullptr)
+		{
+			Node* newNode = new Node(_data, mHead);
+			mHead->prev = newNode;
+			mHead = newNode;
+		}
+		
+		mSize++;
 
 	}
 
@@ -277,13 +295,31 @@ public:
 	void AddTail(const Type& _data) {
 		// TODO: Implement this method
 
+		if (mHead == nullptr && mTail == nullptr)
+		{
+			Node* newNode = new Node(_data);
+			mHead = newNode;
+			mTail = newNode;
+		}
+		else if (mTail != nullptr)
+		{
+			Node* newNode = new Node(_data, nullptr, mTail);
+			mTail->next = newNode;
+			mTail = newNode;
+		}
+
+		mSize++;
+
+	
+
+
 	}
 
 	// Clear the list of all dynamic memory
 	//			Resets the list to its default state
 	void Clear() {
 		// TODO: Implement this method
-		
+
 	}
 
 private:
@@ -352,7 +388,7 @@ public:
 	// Return: An iterator that has its curr pointing to the list's head
 	Iterator Begin() const {
 		// TODO: Implement this method
-	
+
 	}
 
 	// Set an Iterator pointing to the end of the list
