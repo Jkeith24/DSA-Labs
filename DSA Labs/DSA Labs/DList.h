@@ -37,24 +37,24 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB_3	1
 
 // Individual unit test toggles
-#define LAB3_CTOR						1	//PASS
-#define LAB3_NODE_CTOR_DEFAULT			1	//PASS
-#define LAB3_NODE_CTOR					1	//PASS
-#define LAB3_ADDHEAD_EMPTY				1	//PASS
-#define LAB3_ADDHEAD					1	//PASS
-#define LAB3_ADDTAIL_EMPTY				1	//PASS
-#define LAB3_ADDTAIL					1	//PASS
-#define LAB3_CLEAR						0
-#define LAB3_DTOR						0
-#define LAB3_ITER_BEGIN					0
-#define LAB3_ITER_END					0
-#define LAB3_ITER_INCREMENT_PRE			0
-#define LAB3_ITER_INCREMENT_POST		0
-#define LAB3_ITER_DECREMENT_PRE			0
-#define LAB3_ITER_DECREMENT_POST		0
-#define LAB3_ITER_DEREFERENCE			0
+#define LAB3_CTOR						0	//PASS
+#define LAB3_NODE_CTOR_DEFAULT			0	//PASS
+#define LAB3_NODE_CTOR					0	//PASS
+#define LAB3_ADDHEAD_EMPTY				0	//PASS
+#define LAB3_ADDHEAD					0	//PASS
+#define LAB3_ADDTAIL_EMPTY				0	//PASS
+#define LAB3_ADDTAIL					0	//PASS
+#define LAB3_CLEAR						0	//PASS
+#define LAB3_DTOR						0	//PASS
+#define LAB3_ITER_BEGIN					0	//PASS
+#define LAB3_ITER_END					0	//PASS
+#define LAB3_ITER_INCREMENT_PRE			0	//PASS
+#define LAB3_ITER_INCREMENT_POST		0	//PASS	
+#define LAB3_ITER_DECREMENT_PRE			0	//PASS
+#define LAB3_ITER_DECREMENT_POST		0	//PASS
+#define LAB3_ITER_DEREFERENCE			0	//PASS
 #define LAB3_INSERT_EMPTY				0
-#define LAB3_INSERT_HEAD				0
+#define LAB3_INSERT_HEAD				1
 #define LAB3_INSERT_MIDDLE				0
 #define LAB3_ERASE_EMPTY				0
 #define LAB3_ERASE_HEAD					0
@@ -113,6 +113,9 @@ public:
 		Iterator& operator++() {
 			// TODO: Implement this method
 
+			mCurr = mCurr->next;
+			return *this;
+
 		}
 
 		// Post-fix increment operator
@@ -139,6 +142,11 @@ public:
 		*/
 		Iterator operator++(int) {
 			// TODO: Implement this method
+			Iterator old = *this;
+
+			mCurr = mCurr->next;
+
+			return old;
 
 		}
 
@@ -163,6 +171,9 @@ public:
 		*/
 		Iterator& operator--() {
 			// TODO: Implement this method
+
+			mCurr = mCurr->prev;
+			return *this;
 
 		}
 
@@ -190,6 +201,12 @@ public:
 		*/
 		Iterator operator--(int) {
 			// TODO: Implement this method
+
+			Iterator old = *this;
+
+			mCurr = mCurr->prev;
+
+			return old;
 		}
 
 		// Dereference operator
@@ -197,6 +214,8 @@ public:
 		// Return: The data the curr is pointing to
 		Type& operator*() {
 			// TODO: Implement this method
+
+			return this->mCurr->data;
 		}
 
 		// Not-equal operator (used for testing)
@@ -233,7 +252,7 @@ public:
 	//		Cleans up all dynamically allocated memory
 	~DList() {
 		// TODO: Implement this method
-
+		Clear();
 	}
 
 	// Copy constructor
@@ -249,8 +268,24 @@ public:
 	//
 	// Return: The invoking object (by reference)
 	//		This allows us to daisy-chain
+
 	DList& operator=(const DList& _assign) {
 		// TODO: Implement this method
+
+		if (this != &_assign)
+		{
+			this->Clear();
+
+
+
+
+
+
+
+		}
+
+
+		return *this;
 
 	}
 
@@ -260,6 +295,9 @@ private:
 	// In:	_curr		The current Node to copy
 	void RecursiveCopy(const Node* _curr) {
 		// TODO (optional): Implement this method
+
+
+
 	}
 
 public:
@@ -270,7 +308,7 @@ public:
 	void AddHead(const Type& _data) {
 		// TODO: Implement this method
 
-		
+
 
 		if (mHead == nullptr && mTail == nullptr)
 		{
@@ -278,13 +316,14 @@ public:
 			mHead = newNode;
 			mTail = newNode;
 
-		}else if (mHead != nullptr)
+		}
+		else if (mHead != nullptr)
 		{
 			Node* newNode = new Node(_data, mHead);
 			mHead->prev = newNode;
 			mHead = newNode;
 		}
-		
+
 		mSize++;
 
 	}
@@ -310,8 +349,6 @@ public:
 
 		mSize++;
 
-	
-
 
 	}
 
@@ -319,6 +356,29 @@ public:
 	//			Resets the list to its default state
 	void Clear() {
 		// TODO: Implement this method
+
+		while (true)
+		{
+			Node* temp = mHead;
+
+			if (mHead != nullptr && mHead->next != nullptr)
+			{
+				mHead = mHead->next;
+			}
+			else
+			{
+				delete mHead;
+				break;
+			}
+
+
+			delete temp;
+		}
+
+		mHead = nullptr;
+		mTail = nullptr;
+		mSize = 0;
+
 
 	}
 
@@ -328,6 +388,7 @@ private:
 	// In:	_curr		The current Node to clear
 	void RecursiveClear(const Node* _curr) {
 		// TODO (Optional): Implement this method
+
 
 	}
 
@@ -353,8 +414,31 @@ public:
 	// Return:	The iterator
 	// SPECIAL CASE:	Inserting at head or empty list
 	// NOTE:	The iterator should now be pointing to the new node created
+
 	Iterator Insert(Iterator& _iter, const Type& _data) {
 		// Implement this method
+		Iterator iter;
+
+
+
+		if (this->mHead == nullptr && this->mTail == nullptr)
+		{
+			Node* newNode = new Node(_data);	//for some reason I couldn't call addhead here, didn't like using nullptr in the addHead function.
+
+			mHead = newNode;
+			mTail = newNode;
+			iter.mCurr = newNode;
+			mSize++;
+		}
+		else if (_iter.mCurr == this->mHead)
+		{
+			AddHead(_iter.mCurr->data);
+			iter.mCurr = mHead;
+		}
+
+
+		return iter;
+
 
 	}
 
@@ -389,13 +473,24 @@ public:
 	Iterator Begin() const {
 		// TODO: Implement this method
 
+		Iterator iter;
+		iter.mCurr = this->mHead;
+
+		return iter;
+
+
 	}
 
 	// Set an Iterator pointing to the end of the list
 	// 
 	// Return: An iterator that has its curr pointing to a null pointer
+
 	Iterator End() const {
 		// TODO: Implement this method
+
+		Iterator iter;
+		iter.mCurr = this->mTail->next;
+		return iter;
 
 	}
 };
