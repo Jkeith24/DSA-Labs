@@ -55,10 +55,10 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB3_ITER_DEREFERENCE			0	//PASS
 #define LAB3_INSERT_EMPTY				0	//PASS
 #define LAB3_INSERT_HEAD				0	//PASS
-#define LAB3_INSERT_MIDDLE				1	//FAIL
-#define LAB3_ERASE_EMPTY				0	//PASS
-#define LAB3_ERASE_HEAD					0	//PASS
-#define LAB3_ERASE_TAIL					0	//PASS
+#define LAB3_INSERT_MIDDLE				0	//FAIL
+#define LAB3_ERASE_EMPTY				1	//PASS
+#define LAB3_ERASE_HEAD					1	//PASS
+#define LAB3_ERASE_TAIL					1	//PASS
 #define LAB3_ERASE_MIDDLE				0	//PASS
 #define LAB3_ASSIGNMENT_OP				0	//PASs
 #define LAB3_COPY_CTOR					0	//PASS
@@ -437,7 +437,7 @@ public:
 
 	Iterator Insert(Iterator& _iter, const Type& _data) {
 		// Implement this method
-		
+
 
 
 		//Checking to see if list is empty
@@ -469,7 +469,7 @@ public:
 
 			mSize++;
 			_iter.mCurr = newNode;
-			
+
 
 
 		}
@@ -509,52 +509,52 @@ public:
 		}
 		else
 		{
-			for (auto it = this->Begin(); it != this->End(); ++it)
+
+			if (_iter.mCurr != mHead && _iter.mCurr != mTail)
 			{
-				if (_iter.mCurr == it.mCurr && _iter.mCurr != mHead && _iter.mCurr != mTail)
-				{
-					it.mCurr->prev->next = it.mCurr->next;
-					it.mCurr->next->prev = it.mCurr->prev;
+				_iter.mCurr->prev->next = _iter.mCurr->next;
+				_iter.mCurr->next->prev = _iter.mCurr->prev;
 
 
-					iter.mCurr = it.mCurr->next;
-					delete it.mCurr;
+				iter.mCurr = _iter.mCurr->next;
+				delete _iter.mCurr;
 
-					break;
+				
 
-				}
-				else if (_iter.mCurr == it.mCurr && _iter.mCurr == mTail)
-				{
-					it.mCurr->prev->next = nullptr;
+			}
+			else if (_iter.mCurr == mTail)
+			{
+				_iter.mCurr->prev->next = nullptr;
 
 
-					iter.mCurr = it.mCurr->next;
-					mTail = it.mCurr->prev;
-					delete it.mCurr;
+				iter.mCurr = _iter.mCurr->next;
+				mTail = _iter.mCurr->prev;
+				delete _iter.mCurr;
 
-					break;
-				}
-				else if (_iter.mCurr == it.mCurr && _iter.mCurr == mHead)
-				{
-					it.mCurr->next->prev = nullptr;
+				
+			}
+			else if (_iter.mCurr == mHead)
+			{
+				_iter.mCurr->next->prev = nullptr;
 
-					mHead = it.mCurr->next;
-					delete it.mCurr;
-					iter.mCurr = mHead;
-					break;
-				}
+				mHead = _iter.mCurr->next;
+				delete _iter.mCurr;
+				iter.mCurr = mHead;
+			
 			}
 		}
-
-
-
 		--mSize;
 		return iter;
-
-
-
-
 	}
+
+
+
+	
+
+
+
+
+	
 
 	// Set an Iterator at the front of the list
 	// 
