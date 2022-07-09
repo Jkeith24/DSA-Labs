@@ -53,15 +53,15 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB3_ITER_DECREMENT_PRE			0	//PASS
 #define LAB3_ITER_DECREMENT_POST		0	//PASS
 #define LAB3_ITER_DEREFERENCE			0	//PASS
-#define LAB3_INSERT_EMPTY				0
-#define LAB3_INSERT_HEAD				1
-#define LAB3_INSERT_MIDDLE				0
-#define LAB3_ERASE_EMPTY				0
-#define LAB3_ERASE_HEAD					0
-#define LAB3_ERASE_TAIL					0
-#define LAB3_ERASE_MIDDLE				0
-#define LAB3_ASSIGNMENT_OP				0
-#define LAB3_COPY_CTOR					0
+#define LAB3_INSERT_EMPTY				0	//PASS
+#define LAB3_INSERT_HEAD				0	//PASS
+#define LAB3_INSERT_MIDDLE				1	//FAIL
+#define LAB3_ERASE_EMPTY				0	//PASS
+#define LAB3_ERASE_HEAD					0	//PASS
+#define LAB3_ERASE_TAIL					0	//PASS
+#define LAB3_ERASE_MIDDLE				0	//PASS
+#define LAB3_ASSIGNMENT_OP				0	//PASS
+#define LAB3_COPY_CTOR					0	//PASS
 
 template<typename Type>
 class DList {
@@ -260,6 +260,12 @@ public:
 	// In:	_copy			The object to copy from
 	DList(const DList& _copy) {
 		// TODO: Implement this method
+		mHead = nullptr;
+		mTail = nullptr;
+		mSize = 0;
+
+		*this = _copy;
+
 	}
 
 	// Assignment operator
@@ -277,10 +283,20 @@ public:
 			this->Clear();
 
 
+			for (auto it = _assign.Begin(); it != _assign.End(); ++it)
+			{
+				
+				if (mHead == nullptr)
+				{
+					this->AddHead(it.mCurr->data);
+				}
+				else
+				{
+					this->AddTail(it.mCurr->data);
+				}
 
 
-
-
+			}
 
 		}
 
@@ -367,7 +383,10 @@ public:
 			}
 			else
 			{
+				
 				delete mHead;
+				
+				
 				break;
 			}
 
@@ -420,7 +439,7 @@ public:
 		Iterator iter;
 
 
-
+		//Checking to see if list is empty
 		if (this->mHead == nullptr && this->mTail == nullptr)
 		{
 			Node* newNode = new Node(_data);	//for some reason I couldn't call addhead here, didn't like using nullptr in the addHead function.
@@ -430,11 +449,34 @@ public:
 			iter.mCurr = newNode;
 			mSize++;
 		}
-		else if (_iter.mCurr == this->mHead)
+		else if (_iter.mCurr == this->mHead)		//checking to see if the iterator is at the head
 		{
-			AddHead(_iter.mCurr->data);
+			AddHead(_data);
 			iter.mCurr = mHead;
 		}
+		else
+		{
+
+			for (auto it = this->Begin(); it != this->End(); ++it)
+			{
+				if (it.mCurr == _iter.mCurr)
+				{
+
+					Node* newNode = new Node(_data);
+
+					newNode->next = it.mCurr;
+					newNode->prev = it.mCurr->prev;
+					it.mCurr->prev->next = newNode;
+					it.mCurr->prev = newNode;
+
+					mSize++;
+					iter.mCurr = newNode;
+					break;
+				}
+			}
+
+		}
+
 
 
 		return iter;
@@ -464,6 +506,59 @@ public:
 	// NOTE:	The iterator should now be pointing at the node after the one erased
 	Iterator Erase(Iterator& _iter) {
 		// TODO: Implement this method
+
+		Iterator iter;
+
+		if (this->mHead == nullptr)
+		{
+			iter.mCurr = nullptr;
+		}
+		else
+		{
+			for (auto it = this->Begin(); it != this->End(); ++it)
+			{
+				if (_iter.mCurr == it.mCurr && _iter.mCurr != mHead && _iter.mCurr != mTail)
+				{
+					it.mCurr->prev->next = it.mCurr->next;
+					it.mCurr->next->prev = it.mCurr->prev;
+
+
+					iter.mCurr = it.mCurr->next;
+					delete it.mCurr;
+
+					break;
+
+				}
+				else if (_iter.mCurr == it.mCurr && _iter.mCurr == mTail)
+				{
+					it.mCurr->prev->next = nullptr;
+
+
+					iter.mCurr = it.mCurr->next;
+					mTail = it.mCurr->prev;
+					delete it.mCurr;
+					
+					break;
+				}
+				else if (_iter.mCurr == it.mCurr && _iter.mCurr == mHead)
+				{
+					it.mCurr->next->prev = nullptr;
+					
+					mHead = it.mCurr->next;
+					delete it.mCurr;
+					iter.mCurr = mHead;
+					break;
+				}
+			}
+		}
+
+
+		
+		--mSize;
+		return iter;
+
+
+
 
 	}
 
