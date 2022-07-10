@@ -166,7 +166,7 @@ public:
 		for (auto iter = mList.begin(); iter != mList.end(); )
 		{
 			
-			int convert = *iter;
+			int convert = (int) *iter;
 
 			float answer = *iter - convert;
 
