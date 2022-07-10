@@ -34,16 +34,16 @@ NOTE: If the unit test is not on, that code will not be compiled!
 
 
 // Main toggle
-#define LAB_4	0
+#define LAB_4	1
 
 // Individual unit test toggles
-#define LAB4_QUEUE_ADD				0
-#define LAB4_STACK_ADD				0
-#define LAB4_QUEUE_REMOVE			0
-#define LAB4_STACK_REMOVE			0
-#define LAB4_INSERT_ITER			0
-#define LAB4_INSERT_INDEX			0
-#define LAB4_REMOVE_DECIMAL			0
+#define LAB4_QUEUE_ADD				1	//PASS
+#define LAB4_STACK_ADD				1	//PASS
+#define LAB4_QUEUE_REMOVE			1	//PASS
+#define LAB4_STACK_REMOVE			1	//PASS
+#define LAB4_INSERT_ITER			1	//PASS
+#define LAB4_INSERT_INDEX			1	//PASS	
+#define LAB4_REMOVE_DECIMAL			1
 
 /************/
 /* Includes */
@@ -66,6 +66,11 @@ public:
 	void QueueOrderingAdd(const float* _arr, size_t _size) {
 		// TODO: Implement this method
 
+		for(int i = 0; i < _size; i++)
+		{
+			mList.push_back(_arr[i]);
+		}
+
 	}
 
 	// Add all of the values from the array into the list using stack ordering
@@ -75,6 +80,11 @@ public:
 	void StackOrderingAdd(const float* _arr, size_t _size) {
 		// TODO: Implement this method
 
+		for (int i = 0; i < _size; i++)
+		{
+			mList.push_front(_arr[i]);
+		}
+
 	}
 
 	// Remove a single value from the list using queue ordering
@@ -82,6 +92,12 @@ public:
 	// Return: The value that was removed
 	float QueueOrderingRemove() {
 		// TODO: Implement this method
+
+		float temp = mList.front();
+		
+		 mList.pop_front();
+
+		 return temp;
 	
 	}
 
@@ -90,6 +106,12 @@ public:
 	// Return: The value that was removed
 	float StackOrderingRemove() {
 		// TODO: Implement this method
+
+		float temp = mList.front();
+
+		mList.pop_front();
+
+		return temp;
 
 	}
 
@@ -110,6 +132,13 @@ public:
 	void Insert(int _index, float _val) {
 		// TODO: Implement this method
 
+		std::list<float>::iterator iter = std::next(mList.begin(), _index);
+		
+
+		mList.insert(iter, _val);
+		
+
+
 	}
 
 	// Insert a value at the spot specified by the iterator passed in
@@ -118,6 +147,8 @@ public:
 	//		_val		The value to insert
 	void Insert(std::list<float>::iterator _iter, float _val) {
 		// TODO: Implement this method
+
+		mList.insert(_iter, _val);
 
 	}
 
@@ -129,6 +160,33 @@ public:
 	// Return: The total number of values removed
 	int RemoveDecimalGreater(float _decimal) {
 		// TODO: Implement this method
+
+		int valuesRemoved = 0;
+
+		for (auto iter = mList.begin(); iter != mList.end(); )
+		{
+			
+			int convert = *iter;
+
+			float answer = *iter - convert;
+
+			if (answer > _decimal)
+			{
+				iter = mList.erase(iter);
+				valuesRemoved++;
+			}
+			else
+			{
+				iter++;
+			}
+
+
+		}
+
+		return valuesRemoved;
+
+
+		
 
  	}
 };

@@ -34,34 +34,34 @@ NOTE: If the unit test is not on, that code will not be compiled!
 
 
 // Main toggle
-#define LAB_3	1
+#define LAB_3	0
 
 // Individual unit test toggles
-#define LAB3_CTOR						0	//PASS
-#define LAB3_NODE_CTOR_DEFAULT			0	//PASS
-#define LAB3_NODE_CTOR					0	//PASS
-#define LAB3_ADDHEAD_EMPTY				0	//PASS
-#define LAB3_ADDHEAD					0	//PASS
-#define LAB3_ADDTAIL_EMPTY				0	//PASS
-#define LAB3_ADDTAIL					0	//PASS
-#define LAB3_CLEAR						0	//PASS
-#define LAB3_DTOR						0	//PASS
-#define LAB3_ITER_BEGIN					0	//PASS
-#define LAB3_ITER_END					0	//PASS
-#define LAB3_ITER_INCREMENT_PRE			0	//PASS
-#define LAB3_ITER_INCREMENT_POST		0	//PASS	
-#define LAB3_ITER_DECREMENT_PRE			0	//PASS
-#define LAB3_ITER_DECREMENT_POST		0	//PASS
-#define LAB3_ITER_DEREFERENCE			0	//PASS
-#define LAB3_INSERT_EMPTY				0	//PASS
-#define LAB3_INSERT_HEAD				0	//PASS
-#define LAB3_INSERT_MIDDLE				0	//FAIL
+#define LAB3_CTOR						1	//PASS
+#define LAB3_NODE_CTOR_DEFAULT			1	//PASS
+#define LAB3_NODE_CTOR					1	//PASS
+#define LAB3_ADDHEAD_EMPTY				1	//PASS
+#define LAB3_ADDHEAD					1	//PASS
+#define LAB3_ADDTAIL_EMPTY				1	//PASS
+#define LAB3_ADDTAIL					1	//PASS
+#define LAB3_CLEAR						1	//PASS
+#define LAB3_DTOR						1	//PASS
+#define LAB3_ITER_BEGIN					1	//PASS
+#define LAB3_ITER_END					1	//PASS
+#define LAB3_ITER_INCREMENT_PRE			1	//PASS
+#define LAB3_ITER_INCREMENT_POST		1	//PASS	
+#define LAB3_ITER_DECREMENT_PRE			1	//PASS
+#define LAB3_ITER_DECREMENT_POST		1	//PASS
+#define LAB3_ITER_DEREFERENCE			1	//PASS
+#define LAB3_INSERT_EMPTY				1	//PASS
+#define LAB3_INSERT_HEAD				1	//PASS
+#define LAB3_INSERT_MIDDLE				1	//FAIL
 #define LAB3_ERASE_EMPTY				1	//PASS
 #define LAB3_ERASE_HEAD					1	//PASS
 #define LAB3_ERASE_TAIL					1	//PASS
-#define LAB3_ERASE_MIDDLE				0	//PASS
-#define LAB3_ASSIGNMENT_OP				0	//PASs
-#define LAB3_COPY_CTOR					0	//PASS
+#define LAB3_ERASE_MIDDLE				1	//PASS
+#define LAB3_ASSIGNMENT_OP				1	//PASs
+#define LAB3_COPY_CTOR					1	//PASS
 
 template<typename Type>
 
