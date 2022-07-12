@@ -34,7 +34,7 @@ NOTE: If the unit test is not on, that code will not be compiled!
 
 
 // Main toggle
-#define LAB_4	1
+#define LAB_4	0
 
 // Individual unit test toggles
 #define LAB4_QUEUE_ADD				1	//PASS
