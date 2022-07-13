@@ -37,18 +37,18 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB_5	1
 
 // Individual unit test toggles
-#define LAB5_PAIR_CTOR				0	//PASS
-#define LAB5_CTOR					0	//PASS
-#define LAB5_DTOR					0	//PASS
-#define LAB5_CLEAR					0	//PASS
-#define LAB5_INSERT_NEW				0	//PASS
-#define LAB5_INSERT_EXISTING		0	//PASS
-#define LAB5_FIND					0	//PASS	
-#define LAB5_FIND_NOT_FOUND			0	//PASS
-#define LAB5_REMOVE					0	//PASS
-#define LAB5_REMOVE_NOT_FOUND		0	//PASS
-#define LAB5_ASSIGNMENT_OP			1
-#define LAB5_COPY_CTOR				0
+#define LAB5_PAIR_CTOR				1	//PASS
+#define LAB5_CTOR					1	//PASS
+#define LAB5_DTOR					1	//PASS
+#define LAB5_CLEAR					1	//PASS
+#define LAB5_INSERT_NEW				1	//PASS
+#define LAB5_INSERT_EXISTING		1	//PASS
+#define LAB5_FIND					1	//PASS
+#define LAB5_FIND_NOT_FOUND			1	//PASS
+#define LAB5_REMOVE					1	//PASS
+#define LAB5_REMOVE_NOT_FOUND		1	//PASS
+#define LAB5_ASSIGNMENT_OP			1	//PASS
+#define LAB5_COPY_CTOR				1	//PASS
 
 /************/
 /* Includes */
@@ -102,11 +102,8 @@ public:
 		mNumBuckets = _numBuckets;
 		mHashFunc = _hashFunc;
 
-			
 		mTable = new std::list<Pair>[mNumBuckets];
 
-
-		
 	}
 
 	// Destructor
@@ -124,6 +121,14 @@ public:
 	Dictionary(const Dictionary& _copy) {
 		// TODO: Implement this method
 
+		/*this->mHashFunc = _copy.mHashFunc;
+		this->mNumBuckets = _copy.mNumBuckets;*/
+		
+		this->mTable = nullptr;
+		
+		*this = _copy;
+		
+
 	}
 
 	// Assignment operator
@@ -134,7 +139,27 @@ public:
 	//		This allows us to daisy-chain
 	Dictionary& operator=(const Dictionary& _assign) {
 		// TODO: Implement this method
-	
+		
+		
+
+		if (this != &_assign)
+		{
+			delete[] mTable;
+
+			mNumBuckets = _assign.mNumBuckets;
+			mHashFunc = _assign.mHashFunc;
+
+			mTable = new std::list<Pair>[mNumBuckets];
+
+
+			for (int i = 0; i < mNumBuckets; i++)
+			{
+				mTable[i] = _assign.mTable[i];
+			}
+						
+		}
+		return *this;
+
 	}
 
 	// Clear

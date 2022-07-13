@@ -289,7 +289,7 @@ public:
 
 				if (mHead == nullptr)
 				{
-					this->AddHead(it.mCurr->data);
+					this->AddHead(it->data);
 				}
 				else
 				{
