@@ -42,7 +42,7 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB5_DTOR					0	//PASS
 #define LAB5_CLEAR					0	//PASS
 #define LAB5_INSERT_NEW				1
-#define LAB5_INSERT_EXISTING		0
+#define LAB5_INSERT_EXISTING		1
 #define LAB5_FIND					0
 #define LAB5_FIND_NOT_FOUND			0
 #define LAB5_REMOVE					0
@@ -159,6 +159,32 @@ public:
 	// NOTE:	If there is already an item at the provided key, overwrite it.
 	void Insert(const Key& _key, const Value& _value) {
 		// TODO: Implement this method
+		bool isFound = false;
+
+		auto mIter = mTable[mHashFunc(_key)].begin();
+
+		for (auto iter = mTable[mHashFunc(_key)].begin(); iter != mTable[mHashFunc(_key)].end();)
+		{
+			if (iter->key == _key)
+			{
+				isFound = true;
+				mIter = iter;
+				break;
+			}
+			else
+				iter++;
+
+
+		}
+
+		if (isFound)
+		{
+			mIter->value = _value;
+		}
+		else
+		{
+			mTable[mHashFunc(_key)].push_back(Pair(_key, _value));
+		}
 
 	}
 
