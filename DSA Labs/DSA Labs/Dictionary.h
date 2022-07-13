@@ -41,10 +41,10 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB5_CTOR					0	//PASS
 #define LAB5_DTOR					0	//PASS
 #define LAB5_CLEAR					0	//PASS
-#define LAB5_INSERT_NEW				1
-#define LAB5_INSERT_EXISTING		1
-#define LAB5_FIND					0
-#define LAB5_FIND_NOT_FOUND			0
+#define LAB5_INSERT_NEW				0	//PASS
+#define LAB5_INSERT_EXISTING		0	//PASS
+#define LAB5_FIND					1	
+#define LAB5_FIND_NOT_FOUND			1
 #define LAB5_REMOVE					0
 #define LAB5_REMOVE_NOT_FOUND		0
 #define LAB5_ASSIGNMENT_OP			0
@@ -196,6 +196,21 @@ public:
 	const Value* Find(const Key& _key) {
 		// TODO: Implement this method
 
+		
+
+		for (auto iter = mTable[mHashFunc(_key)].begin(); iter != mTable[mHashFunc(_key)].end();)
+		{
+			if (iter->key == _key)
+			{
+				const Value* mValue = &iter->value;
+				return mValue;
+				break;
+			}
+			else
+				iter++;
+		}
+
+		return nullptr;
 	}
 
 	// Remove a value at a specified key
