@@ -138,8 +138,7 @@ public:
 	// Return: The invoking object (by reference)
 	//		This allows us to daisy-chain
 	Dictionary& operator=(const Dictionary& _assign) {
-		// TODO: Implement this method
-		
+		// TODO: Implement this method		
 		
 
 		if (this != &_assign)
@@ -167,13 +166,11 @@ public:
 	//  NOTE:	Does not delete table or reset hash function
 	void Clear() {
 		// TODO: Implement this method
-
-		
+				
 		for (int i = 0; i < mNumBuckets; i++)
 		{
 			mTable[i].clear();
-		}
-		
+		}		
 
 	}
 

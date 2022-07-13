@@ -55,12 +55,12 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB3_ITER_DEREFERENCE			1	//PASS
 #define LAB3_INSERT_EMPTY				1	//PASS
 #define LAB3_INSERT_HEAD				1	//PASS
-#define LAB3_INSERT_MIDDLE				1	//FAIL
+#define LAB3_INSERT_MIDDLE				1	//PASS
 #define LAB3_ERASE_EMPTY				1	//PASS
 #define LAB3_ERASE_HEAD					1	//PASS
 #define LAB3_ERASE_TAIL					1	//PASS
 #define LAB3_ERASE_MIDDLE				1	//PASS
-#define LAB3_ASSIGNMENT_OP				1	//PASs
+#define LAB3_ASSIGNMENT_OP				1	//PASS
 #define LAB3_COPY_CTOR					1	//PASS
 
 template<typename Type>
