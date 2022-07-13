@@ -43,11 +43,11 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB5_CLEAR					0	//PASS
 #define LAB5_INSERT_NEW				0	//PASS
 #define LAB5_INSERT_EXISTING		0	//PASS
-#define LAB5_FIND					1	
-#define LAB5_FIND_NOT_FOUND			1
-#define LAB5_REMOVE					0
-#define LAB5_REMOVE_NOT_FOUND		0
-#define LAB5_ASSIGNMENT_OP			0
+#define LAB5_FIND					0	//PASS	
+#define LAB5_FIND_NOT_FOUND			0	//PASS
+#define LAB5_REMOVE					0	//PASS
+#define LAB5_REMOVE_NOT_FOUND		0	//PASS
+#define LAB5_ASSIGNMENT_OP			1
 #define LAB5_COPY_CTOR				0
 
 /************/
@@ -220,6 +220,21 @@ public:
 	bool Remove(const Key& _key) {
 		// TODO: Implement this method
 
+		for (auto iter = mTable[mHashFunc(_key)].begin(); iter != mTable[mHashFunc(_key)].end();)
+		{
+			if (iter->key == _key)
+			{
+				mTable[mHashFunc(_key)].erase(iter);
+				return true;
+				break;
+			}
+			else
+			{
+				iter++;
+			}
+		}
+
+		return false;
 	}
 	
 };
