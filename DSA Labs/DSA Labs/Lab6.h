@@ -34,15 +34,15 @@ NOTE: If the unit test is not on, that code will not be compiled!
 
 
 // Main toggle
-#define LAB_6	0
+#define LAB_6	1
 
 // Individual unit test toggles
-#define LAB6_POPULATE_LETTER_VALUES	0
-#define LAB6_GET_LETTER_VALUE		0
-#define LAB6_GET_WORD_VALUE			0
-#define LAB6_CREATE_PAIR			0
-#define LAB6_LOAD_FILE				0
-#define LAB6_FIND_WORD_SCORE		0
+#define LAB6_POPULATE_LETTER_VALUES	1	//PASS
+#define LAB6_GET_LETTER_VALUE		1	//PASS
+#define LAB6_GET_WORD_VALUE			1	//PASS
+#define LAB6_CREATE_PAIR			1	//PASS
+#define LAB6_LOAD_FILE				1	//PASS
+#define LAB6_FIND_WORD_SCORE		1	//PASS
 
 /************/
 /* Includes */
@@ -68,6 +68,12 @@ public:
 	void PopulateLetterValues(const int* _letterValues) {
 		// TODO: Implement this method
 
+		for (int i = 0; i < 26; i++)
+		{
+			mLetterValues[i] = _letterValues[i];
+		}
+
+
 	}
 
 	// Retrieve the value of a particular letter
@@ -79,6 +85,9 @@ public:
 	int GetLetterValue(char _letter) const {
 		// TODO: Implement this method
 
+		 
+		return mLetterValues[(_letter)-'A'];
+
 	}
 
 	// Get the value of a word
@@ -89,6 +98,13 @@ public:
 	// Return: The total value of the word
 	int GetWordValue(const std::string& _word) const {
 		// TODO: Implement this method
+		int points = 0;
+
+		for (int i = 0; i < _word.length(); i++)
+		{
+			points += GetLetterValue(_word[i]);
+		}
+		return points;
 
 	}
 
@@ -101,6 +117,9 @@ public:
 	std::pair<std::string, int> CreatePair(const std::string& _word) const {
 		// TODO: Implement this method
 
+		return std::pair(_word, GetWordValue(_word));
+
+
 	}
 
 	// Load a file containing all of the possible scrabble words, along with their values
@@ -111,6 +130,22 @@ public:
 	void LoadWords(const char* _filename) {
 		// TODO: Implement this method
 
+		std::ifstream wordStream(_filename);
+
+		
+		std::string currLine;
+
+		while (!wordStream.eof())
+		{
+			
+			std::getline(wordStream, currLine);
+
+			mScrabbleMap.insert(CreatePair(currLine));
+
+		}
+
+		wordStream.close();
+
 	}
 
 	// Searches for a word in the map, and retrieves the score for that word
@@ -120,6 +155,16 @@ public:
 	// Return: The word score for _word (or -1 if not found)
 	int FindValueInMap(const std::string& _word) {
 		// TODO: Implement this method
+
+		auto iter = mScrabbleMap.find(_word);
+		if (iter != mScrabbleMap.end())
+		{
+			return iter->second;
+		}
+		else
+		{
+			return -1;
+		}
 
 	}
 };
