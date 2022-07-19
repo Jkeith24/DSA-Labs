@@ -68,7 +68,7 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define BST_REMOVE_CASE1						0	//PASS
 #define BST_REMOVE_CASE2						0	//PASS
 #define BST_REMOVE_NOT_FOUND					0	//PASS
-#define BST_IN_ORDER_TRAVERSAL					1
+#define BST_IN_ORDER_TRAVERSAL					1	//PASS
 #define BST_ASSIGNMENT_OP						0
 #define BST_COPY_CTOR							0
 
@@ -488,6 +488,14 @@ public:
 	std::string InOrder() {
 		// TODO: Implement this method
 
+		std::string word;
+
+		InOrder(mRoot, word);
+
+		word.pop_back();
+
+		return word;
+
 	}
 
 private:
@@ -501,6 +509,16 @@ private:
 	// NOTE:	Use to_string to convert an int to its string equivelent
 	void InOrder(Node* _curr, std::string& _str) {
 		// TODO: Implement this method
+
+		
+		if (_curr != nullptr)
+		{
+			InOrder(_curr->left,_str);
+			_str += std::to_string(_curr->data);
+			_str += ' ';
+			InOrder(_curr->right,_str);
+		}
+
 	}
 };
 
