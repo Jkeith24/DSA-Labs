@@ -56,19 +56,19 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define BST_REMOVE_CASE0_ROOT					0	//PASS
 #define BST_REMOVE_CASE0_LEFT					0	//PASS	
 #define BST_REMOVE_CASE0_RIGHT					0	//PASS
-#define BST_REMOVE_CASE1_ROOT_LEFT				1	//PASS
-#define BST_REMOVE_CASE1_ROOT_RIGHT				1	//PASS
-#define BST_REMOVE_CASE1_LEFT_RIGHT				1	//PASS
-#define BST_REMOVE_CASE1_LEFT_LEFT				1	//PASS
-#define BST_REMOVE_CASE1_RIGHT_LEFT				1
-#define BST_REMOVE_CASE1_RIGHT_RIGHT			0
-#define BST_REMOVE_CASE2_CASE0					0
-#define BST_REMOVE_CASE2_CASE1					0
-#define BST_REMOVE_CASE0						0
-#define BST_REMOVE_CASE1						0
-#define BST_REMOVE_CASE2						0
-#define BST_REMOVE_NOT_FOUND					0
-#define BST_IN_ORDER_TRAVERSAL					0
+#define BST_REMOVE_CASE1_ROOT_LEFT				0	//PASS
+#define BST_REMOVE_CASE1_ROOT_RIGHT				0	//PASS
+#define BST_REMOVE_CASE1_LEFT_RIGHT				0	//PASS
+#define BST_REMOVE_CASE1_LEFT_LEFT				0	//PASS
+#define BST_REMOVE_CASE1_RIGHT_LEFT				0	//PASS
+#define BST_REMOVE_CASE1_RIGHT_RIGHT			0	//PASS
+#define BST_REMOVE_CASE2_CASE0					0	//PASS
+#define BST_REMOVE_CASE2_CASE1					0	//PASS
+#define BST_REMOVE_CASE0						0	//PASS
+#define BST_REMOVE_CASE1						0	//PASS
+#define BST_REMOVE_CASE2						0	//PASS
+#define BST_REMOVE_NOT_FOUND					0	//PASS
+#define BST_IN_ORDER_TRAVERSAL					1
 #define BST_ASSIGNMENT_OP						0
 #define BST_COPY_CTOR							0
 
@@ -317,7 +317,7 @@ private:
 	void RemoveCase0(Node* _node) {
 		// TODO: Implement this method
 
-		Node* tempNode = FindNode(_node->data);
+		Node* tempNode = _node;
 
 		if (_node == mRoot)
 		{
@@ -338,8 +338,6 @@ private:
 		
 
 
-
-
 	}
 
 	// Remove a node from the tree that has only one child
@@ -349,7 +347,7 @@ private:
 	void RemoveCase1(Node* _node) {
 		// TODO: Implement this method
 
-		Node* tempNode = FindNode(_node->data);
+		Node* tempNode = _node;
 
 		if (tempNode == mRoot)
 		{
@@ -384,6 +382,21 @@ private:
 				}
 				
 			}
+			else if(tempNode->parent->right == tempNode)
+			{
+				if (tempNode->left)
+				{
+					tempNode->parent->right = tempNode->left;
+					tempNode->left->parent = tempNode->parent;
+				}
+				else if (tempNode->right)
+				{
+					tempNode->parent->right = tempNode->right;
+					tempNode->right->parent = tempNode->parent;
+				}
+				
+
+			}
 
 			delete tempNode;
 		}
@@ -397,6 +410,25 @@ private:
 	void RemoveCase2(Node* _node) {
 		// TODO: Implement this method
 
+		Node* tempNode = _node;
+		Node* min = tempNode->right;
+
+		while (min->left)
+		{
+			min = min->left;
+		}
+
+		tempNode->data = min->data;
+
+		if (min->left == nullptr && min->right == nullptr)
+		{
+			RemoveCase0(min);
+		}
+		else
+		{
+			RemoveCase1(min);
+		}
+		
 	}
 
 public:
@@ -413,9 +445,26 @@ public:
 	bool Remove(const Type& _val) {
 		// TODO: Implement this method
 
+		Node* temp;
+
 		if (this->Contains(_val))
 		{
-
+			temp =  this->FindNode(_val);
+			if (temp->left != nullptr && temp->right != nullptr)
+			{
+				RemoveCase2(temp);
+				return true;
+			}
+			else if (temp->left == nullptr && temp->right == nullptr)
+			{
+				RemoveCase0(temp);
+				return true;
+			}
+			else
+			{
+				RemoveCase1(temp);
+				return true;
+			}
 		}
 		else
 		{
