@@ -49,18 +49,18 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define BST_PUSH_ROOT_RIGHT						0	//PASS
 #define BST_PUSH_LEFT							0	//PASS
 #define BST_PUSH_RIGHT							0	//PASS
-#define BST_CLEAR								0	
-#define BST_DTOR								0
-#define BST_CONTAINS_FOUND						0
-#define BST_CONTAINS_NOTFOUND					0
-#define BST_REMOVE_CASE0_ROOT					0
-#define BST_REMOVE_CASE0_LEFT					0
-#define BST_REMOVE_CASE0_RIGHT					0
-#define BST_REMOVE_CASE1_ROOT_LEFT				0
-#define BST_REMOVE_CASE1_ROOT_RIGHT				0
-#define BST_REMOVE_CASE1_LEFT_LEFT				0
-#define BST_REMOVE_CASE1_LEFT_RIGHT				0
-#define BST_REMOVE_CASE1_RIGHT_LEFT				0
+#define BST_CLEAR								0	//PASS
+#define BST_DTOR								0	//PASS
+#define BST_CONTAINS_FOUND						0	//PASS
+#define BST_CONTAINS_NOTFOUND					0	//PASS
+#define BST_REMOVE_CASE0_ROOT					0	//PASS
+#define BST_REMOVE_CASE0_LEFT					0	//PASS	
+#define BST_REMOVE_CASE0_RIGHT					0	//PASS
+#define BST_REMOVE_CASE1_ROOT_LEFT				1	//PASS
+#define BST_REMOVE_CASE1_ROOT_RIGHT				1	//PASS
+#define BST_REMOVE_CASE1_LEFT_RIGHT				1	//PASS
+#define BST_REMOVE_CASE1_LEFT_LEFT				1	//PASS
+#define BST_REMOVE_CASE1_RIGHT_LEFT				1
 #define BST_REMOVE_CASE1_RIGHT_RIGHT			0
 #define BST_REMOVE_CASE2_CASE0					0
 #define BST_REMOVE_CASE2_CASE1					0
@@ -121,6 +121,9 @@ public:
 	~BST() {
 		// TODO: Implement this method
 
+		Clear();
+		delete mRoot;
+
 	}
 
 	// Copy constructor
@@ -161,6 +164,14 @@ public:
 	void Clear() {
 		// TODO: Implement this method
 
+		
+
+		if (mRoot != nullptr)
+		{
+
+			Clear(mRoot);
+		}
+		mRoot = nullptr;	
 	}
 
 private:
@@ -172,7 +183,15 @@ private:
 	// NOTE:	Use post-order traversal
 	void Clear(Node* _curr) {
 		// TODO: Implement this method
+		
+		if (_curr != nullptr)
+		{
+			Clear(_curr->left);
+			Clear(_curr->right);
+			delete _curr;
+		}
 
+		
 	}
 
 public:
@@ -192,9 +211,6 @@ public:
 		{
 			Push(_val, mRoot);
 		}
-
-		
-
 
 	}
 
@@ -254,6 +270,13 @@ public:
 	bool Contains(const Type& _val) {
 		// TODO: Implement this method
 
+		
+		if (FindNode(_val) != nullptr)
+		{
+			return true;
+		}
+		
+		return false;
 	}
 
 private:
@@ -264,7 +287,27 @@ private:
 	//
 	// Return: The node containing _val (or nullptr if not found)
 	Node* FindNode(const Type& _val) {
+		
+		Node* temp = mRoot;
 
+		while (temp)
+		{
+
+			if (temp->data > _val)
+			{
+				temp = temp->left;
+			}
+			else if (_val > temp->data)
+			{
+				temp = temp->right;
+			}
+			else if (temp->data == _val)
+			{
+				return temp;
+			}
+		}
+
+		return nullptr;
 	}
 
 	// Remove a leaf node from the tree
@@ -274,6 +317,29 @@ private:
 	void RemoveCase0(Node* _node) {
 		// TODO: Implement this method
 
+		Node* tempNode = FindNode(_node->data);
+
+		if (_node == mRoot)
+		{
+			delete _node;
+			mRoot = nullptr;
+		}
+
+		else if(tempNode->parent->left == tempNode)
+		{
+			tempNode->parent->left = nullptr;
+			delete tempNode;
+		}
+		else if (tempNode->parent->right == tempNode)
+		{
+			tempNode->parent->right = nullptr;
+			delete tempNode;
+		}
+		
+
+
+
+
 	}
 
 	// Remove a node from the tree that has only one child
@@ -282,6 +348,45 @@ private:
 	// In:	_node		The node to remove
 	void RemoveCase1(Node* _node) {
 		// TODO: Implement this method
+
+		Node* tempNode = FindNode(_node->data);
+
+		if (tempNode == mRoot)
+		{
+			if (mRoot->left)
+			{
+				mRoot = mRoot->left;
+				mRoot->parent = nullptr;
+			}
+			else if (mRoot->right)
+			{
+				mRoot = mRoot->right;
+				mRoot->parent = nullptr;
+			}
+
+			delete tempNode;
+		}
+		else
+		{
+			if (tempNode->parent->left == tempNode)
+			{
+				
+
+				if (tempNode->left)
+				{
+					tempNode->parent->left = tempNode->left;
+					tempNode->left->parent = tempNode->parent;
+				}
+				else if (tempNode->right)
+				{
+					tempNode->parent->left = tempNode->right;
+					tempNode->right->parent = tempNode->parent;
+				}
+				
+			}
+
+			delete tempNode;
+		}
 
 	}
 
@@ -307,6 +412,15 @@ public:
 	//			C) 1 child
 	bool Remove(const Type& _val) {
 		// TODO: Implement this method
+
+		if (this->Contains(_val))
+		{
+
+		}
+		else
+		{
+			return false;
+		}
 
 	}
 
