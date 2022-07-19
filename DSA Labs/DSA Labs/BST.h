@@ -39,17 +39,17 @@ NOTE: If the unit test is not on, that code will not be compiled!
 
 
 // Main toggle
-#define LAB_7	0
+#define LAB_7	1
 
 // Individual unit test toggles
-#define BST_CTOR								0
-#define BST_NODE_CTOR							0
-#define BST_PUSH_EMPTY							0
-#define BST_PUSH_ROOT_LEFT						0
-#define BST_PUSH_ROOT_RIGHT						0
-#define BST_PUSH_LEFT							0
-#define BST_PUSH_RIGHT							0
-#define BST_CLEAR								0
+#define BST_CTOR								0	//PASS
+#define BST_NODE_CTOR							0	//PASS
+#define BST_PUSH_EMPTY							0	//PASS
+#define BST_PUSH_ROOT_LEFT						0	//PASS
+#define BST_PUSH_ROOT_RIGHT						0	//PASS
+#define BST_PUSH_LEFT							0	//PASS
+#define BST_PUSH_RIGHT							0	//PASS
+#define BST_CLEAR								0	
 #define BST_DTOR								0
 #define BST_CONTAINS_FOUND						0
 #define BST_CONTAINS_NOTFOUND					0
@@ -92,6 +92,12 @@ class BST {
 		Node(const Type& _data, Node* _parent = nullptr) {
 			// TODO: Implement this method
 
+			data = _data;
+			parent = _parent;
+			left = nullptr;
+			right = nullptr;
+
+
 		}
 	};
 
@@ -105,6 +111,8 @@ public:
 	//			Always creates an empty tree
 	BST() {
 		// TODO: Implement this method
+
+		mRoot = nullptr;
 
 	}
 
@@ -133,7 +141,7 @@ public:
 	//		This allows us to daisy-chain
 	BST& operator=(const BST& _assign) {
 		// TODO: Implement this method
-		
+
 	}
 
 private:
@@ -175,6 +183,19 @@ public:
 	void Push(const Type& _val) {
 		// TODO: Implement this method
 
+		if (mRoot == nullptr)
+		{
+			Node* newNode = new Node(_val);
+			mRoot = newNode;
+		}
+		else
+		{
+			Push(_val, mRoot);
+		}
+
+		
+
+
 	}
 
 private:
@@ -184,9 +205,45 @@ private:
 	// In:	_val		The value to add
 	//		_curr		The current Node being looked at
 	void Push(const Type& _val, Node* _curr) {
+
+		Node* temp = _curr;
+
+		if (temp->data > _val)
+		{
+			if (temp->left == nullptr)
+			{
+				Node* newNode = new Node(_val);
+				newNode->parent = temp;
+				temp->left = newNode;
+
+
+			}
+			else
+			{
+				temp = temp->left;
+				Push(_val, temp);
+			}
+		}
+		else if (temp->data < _val)
+		{
+			if (temp->right == nullptr)
+			{
+				Node* newNode = new Node(_val);
+				newNode->parent = temp;
+				temp->right = newNode;
+
+			}
+			else
+			{
+				temp = temp->right;
+				Push(_val, temp);
+			}
+		}
+
 		
+
 	}
-	
+
 public:
 
 	// Checks to see if a value is in the tree
@@ -207,7 +264,7 @@ private:
 	//
 	// Return: The node containing _val (or nullptr if not found)
 	Node* FindNode(const Type& _val) {
-		
+
 	}
 
 	// Remove a leaf node from the tree

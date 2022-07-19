@@ -111,7 +111,9 @@ class Huffman {
 	//
 	// In:	_fileName		The name of the file to open
 	Huffman(const std::string& _fileName) {
+
 		// 1. Assign the data members the values from the parameters
+		
 		
 		// 2. Zero out the frequency table
 		
