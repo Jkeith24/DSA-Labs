@@ -39,11 +39,11 @@ NOTE: If the unit test is not on, that code will not be compiled!
 */
 
 // Main toggle
-#define LAB_8 0
+#define LAB_8 1
 
 // Individual unit test toggles
-#define HUFFMAN_CTOR					0
-#define HUFFMAN_GENERATE_FREQUENCY		0
+#define HUFFMAN_CTOR					1	//PASS
+#define HUFFMAN_GENERATE_FREQUENCY		1	//PASS
 #define HUFFMAN_GENERATE_LEAFLIST		0
 #define HUFFMAN_GENERATE_TREE			0
 #define HUFFMAN_CLEAR_TREE				0
@@ -74,6 +74,15 @@ class Huffman {
 		//		_parent		The parent node (OPTIONAL)
 		HuffNode(short _value, unsigned int _freq, HuffNode* _left = nullptr, HuffNode* _right = nullptr, HuffNode* _parent = nullptr)
 			: value(_value), freq(_freq), left(_left), right(_right), parent(_parent) {
+
+
+			value = _value;
+			freq = _freq;
+			left = _left;
+			right = _right;
+			parent = _parent;
+
+
 		}
 
 		// Copy constructor
@@ -113,11 +122,16 @@ class Huffman {
 	Huffman(const std::string& _fileName) {
 
 		// 1. Assign the data members the values from the parameters
-		
+		mFileName = _fileName;
 		
 		// 2. Zero out the frequency table
-		
+		for (int i = 0; i < 256; i++)
+		{
+			mFrequencyTable[i] = 0;
+		}
+
 		// 3. Set the root to null
+		mRoot = nullptr;
 
 	}
 
@@ -137,11 +151,29 @@ class Huffman {
 	void GenerateFrequencyTable() {
 
 		// 1. Open the file in binary mode (using a standard ifstream)
+		ifstream letterStream(mFileName, ios_base::binary);
 
+		letterStream.seekg(0, std::ios::end);
+
+		size_t fLength = letterStream.tellg();
+
+		letterStream.seekg(0, std::ios::beg);
+
+		unsigned char* letterHolder = new unsigned char[fLength];
+
+		letterStream.read((char*)letterHolder,fLength);
 		// 2. Read the file one byte at a time, and increment the corresponding index
+
+		for (int i = 0; i < fLength; i++)
+		{
+			mFrequencyTable[letterHolder[i]]++;
+
+		}
 		
 		// 3. Close the file when complete
 		
+
+		letterStream.close();
 
 	}
 

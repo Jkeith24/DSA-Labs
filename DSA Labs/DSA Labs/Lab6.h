@@ -34,7 +34,7 @@ NOTE: If the unit test is not on, that code will not be compiled!
 
 
 // Main toggle
-#define LAB_6	1
+#define LAB_6	0
 
 // Individual unit test toggles
 #define LAB6_POPULATE_LETTER_VALUES	1	//PASS

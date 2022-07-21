@@ -39,7 +39,7 @@ NOTE: If the unit test is not on, that code will not be compiled!
 
 
 // Main toggle
-#define LAB_7	1
+#define LAB_7	0
 
 // Individual unit test toggles
 #define BST_CTOR								1	//PASS
