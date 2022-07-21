@@ -139,10 +139,10 @@ class Huffman {
 	//		Needs to clean up any left-over dynamic memory in tree
 	~Huffman() {
 		// 1. Clear out the tree
-
 		ClearTree();
-		
 
+	
+		
 
 	}
 
@@ -178,6 +178,9 @@ class Huffman {
 		
 
 		letterStream.close();
+
+		//cleaning up memory
+		delete letterHolder;
 
 	}
 
