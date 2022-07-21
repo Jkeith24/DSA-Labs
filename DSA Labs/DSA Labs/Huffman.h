@@ -46,8 +46,8 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define HUFFMAN_GENERATE_FREQUENCY		1	//PASS
 #define HUFFMAN_GENERATE_LEAFLIST		1	//PASS
 #define HUFFMAN_GENERATE_TREE			1	//PASS
-#define HUFFMAN_CLEAR_TREE				1	//
-#define HUFFMAN_DTOR					0
+#define HUFFMAN_CLEAR_TREE				1	//PASS
+#define HUFFMAN_DTOR					1	//PASS
 #define HUFFMAN_GENERATE_ENCODING		0
 #define HUFFMAN_COMPRESS				0
 #define HUFFMAN_DECOMPRESS				0
@@ -139,6 +139,10 @@ class Huffman {
 	//		Needs to clean up any left-over dynamic memory in tree
 	~Huffman() {
 		// 1. Clear out the tree
+
+		ClearTree();
+		
+
 
 	}
 
@@ -265,6 +269,10 @@ class Huffman {
 	void ClearTree() {
 		// 1. Call the helper function with the root and then set it back to null
 	
+		ClearTree(mRoot);
+
+		mRoot = nullptr;
+
 	}
 
 	// Clear the tree of all dynamic memory (recursive helper function)
@@ -275,6 +283,13 @@ class Huffman {
 	void ClearTree(HuffNode* _curr) {
 		// 1. Implement this method
 	
+		if (_curr != nullptr)
+		{
+			ClearTree(_curr->left);
+			ClearTree(_curr->right);
+			delete _curr;
+		}
+
 	}
 
 	// Write a Huffman compressed file to disk
