@@ -44,9 +44,9 @@ NOTE: If the unit test is not on, that code will not be compiled!
 // Individual unit test toggles
 #define HUFFMAN_CTOR					1	//PASS
 #define HUFFMAN_GENERATE_FREQUENCY		1	//PASS
-#define HUFFMAN_GENERATE_LEAFLIST		0
-#define HUFFMAN_GENERATE_TREE			0
-#define HUFFMAN_CLEAR_TREE				0
+#define HUFFMAN_GENERATE_LEAFLIST		1	//PASS
+#define HUFFMAN_GENERATE_TREE			1	//PASS
+#define HUFFMAN_CLEAR_TREE				1	//
 #define HUFFMAN_DTOR					0
 #define HUFFMAN_GENERATE_ENCODING		0
 #define HUFFMAN_COMPRESS				0
@@ -183,16 +183,34 @@ class Huffman {
 	void GenerateLeafList() {
 		// 1. Iterate through the frequency table and dynamically create a leaf node for each non-0
 		// frequency. Add it to the mLeafList vector.
+
+		for (int i = 0; i < 256; i++)
+		{
+			if (mFrequencyTable[i] != 0)
+			{
+				HuffNode* node = new HuffNode(i, mFrequencyTable[i]);
+				mLeafList.push_back(node);
+			}
+		}
+
 		
 	}
+
 
 	// Generate a Huffman tree
 	void GenerateTree() {
 		// 1. Create the priority queue
 		//              This will be storing HuffNode*'s
 		//              in a vector, and will be using the HuffCompare for comparison
-		
+
+		std::priority_queue<HuffNode*, std::vector<HuffNode*>, HuffCompare> priorityQ;
+
 		// 2. Add in all data from your leaf list
+
+		for (int i = 0; i < mLeafList.size(); i++)
+		{
+			priorityQ.push(mLeafList[i]);
+		}
 		
 		// 3. Enter the tree generation algorithm
 		//              While the queue has more than 1 node
@@ -201,10 +219,35 @@ class Huffman {
 		//                      Set the parent value to -1, and frequency to the sum of its children
 		//                      Set the 1st and 2nd node's parent to the new node you created
 		//                      Insert new node into queue
+		while (priorityQ.size() > 1)
+		{
+			//temp node pointers
+			HuffNode* leftNode;
+			HuffNode* rightNode;
+
+			//getting first two nodes and setting them to temp pointers
+			leftNode = priorityQ.top();
+			priorityQ.pop();				
+			rightNode = priorityQ.top();
+			priorityQ.pop();
+
+			//creating parent node and setting left and right
+			HuffNode* ParentNode = new HuffNode(-1, (leftNode->freq + rightNode->freq), leftNode, rightNode);			
+			leftNode->parent = ParentNode;
+			rightNode->parent = ParentNode;
+
+			//inserting parent into Queue
+			priorityQ.push(ParentNode);
+
+		}
+
+
 
 		// 4. Set the root of the tree (this will be the only node in the queue)
+		mRoot = priorityQ.top();
 		
 	}
+
 
 	// Generating the encoding table for the Huffman algorithm
 	//
