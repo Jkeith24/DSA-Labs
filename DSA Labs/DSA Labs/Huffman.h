@@ -42,15 +42,15 @@ NOTE: If the unit test is not on, that code will not be compiled!
 #define LAB_8 1
 
 // Individual unit test toggles
-#define HUFFMAN_CTOR					1	//PASS
-#define HUFFMAN_GENERATE_FREQUENCY		1	//PASS
-#define HUFFMAN_GENERATE_LEAFLIST		1	//PASS
-#define HUFFMAN_GENERATE_TREE			1	//PASS
-#define HUFFMAN_CLEAR_TREE				1	//PASS
-#define HUFFMAN_DTOR					1	//PASS
-#define HUFFMAN_GENERATE_ENCODING		0
-#define HUFFMAN_COMPRESS				0
-#define HUFFMAN_DECOMPRESS				0
+#define HUFFMAN_CTOR					0	//PASS
+#define HUFFMAN_GENERATE_FREQUENCY		0	//PASS
+#define HUFFMAN_GENERATE_LEAFLIST		0	//PASS
+#define HUFFMAN_GENERATE_TREE			0	//PASS
+#define HUFFMAN_CLEAR_TREE				0	//PASS
+#define HUFFMAN_DTOR					0	//PASS
+#define HUFFMAN_GENERATE_ENCODING		0	//PASS
+#define HUFFMAN_COMPRESS				0	//PASS
+#define HUFFMAN_DECOMPRESS				1	//
 
 // Wraps up Huffman compression algorithm
 class Huffman {
@@ -175,7 +175,6 @@ class Huffman {
 		}
 		
 		// 3. Close the file when complete
-		
 
 		letterStream.close();
 
@@ -265,7 +264,39 @@ class Huffman {
 		//			As you move up, push a 0 to the vector if you passed through a left child connection
 		//			and a 1 if you passed through a right
 		//			Once you hit the root node, reverse the values in the vector
+
 		
+		for (int i = 0; i < mLeafList.size(); i++)
+		{
+			HuffNode* temp = mLeafList[i];	//current leaf node in leafList
+
+			int value = mLeafList[i]->value;	//value of the current leaf
+
+			while (temp->parent != nullptr)		//root should be only leaf with a parent having a nullptr so I shoul stop at Root
+			{
+
+				//checking if traversing through left node
+				if (temp == temp->parent->left)
+				{
+					
+					mEncodingTable[value].push_back(0);	//putting a zero into the encoding table
+										
+					temp = temp->parent;				//moving temp up towards root
+				}
+				else if(temp == temp->parent->right)	//checking if traversing through right node							
+				{
+										
+					mEncodingTable[value].push_back(1);		//putting a 1 into encoding table
+					
+					temp = temp->parent;				//moving temp up towards root
+				}
+
+			}
+
+			std::reverse(mEncodingTable[value].begin(),mEncodingTable[value].end());	//reversing values in encoding table
+					
+		}
+				
 	}
 
 	// Clear the tree of all dynamic memory (by using the helper function)
@@ -302,13 +333,43 @@ class Huffman {
 	// Note: You will use most of your other functionality to complete this function
 	void Compress(const char* _outputFile) {
 		// 1. Create the frequency table, leaf list, tree, and encoding table (in this order)
+
+		GenerateFrequencyTable();
+		GenerateLeafList();
+		GenerateTree();
+		GenerateEncodingTable();
 		
 		// 2. Create a BitOStream and supply it the huffman header
+
+
+		BitOfstream oStream(_outputFile,(const char*)mFrequencyTable, 1024);
 		
 		// 3. Open the input file in binary mode with a standard ifstream
+
+		ifstream letterStream(mFileName, std::ios_base::binary);
 		
 		// 4. Start the compression process.   (You can read the whole file into a buffer first if you want)
 		//		For each character in the original file, write out the bit-code from the encoding table
+
+		letterStream.seekg(0, std::ios::end);
+
+		size_t fLength = letterStream.tellg();
+
+		letterStream.seekg(0, std::ios::beg);
+
+		unsigned char* letterHolder = new unsigned char[fLength];
+
+		letterStream.read((char*)letterHolder, fLength);
+		
+		for (int i = 0; i < fLength; i++)
+		{
+			oStream << mEncodingTable[letterHolder[i]];
+
+		}
+
+		oStream.Close();
+		letterStream.close();
+		delete letterHolder;
 		
 	}
 
@@ -319,23 +380,46 @@ class Huffman {
 	// Note: The mFileName will be the compressed file
 	void Decompress(const char* _outputFile) {
 		// 1. Create a BitIStream and read the frequency table
+
+		
+
+		BitIfstream iStream(mFileName.c_str(), (char*)mFrequencyTable, 1024);
 		
 		// 2. Create the leaf list and tree (in this order)
+		GenerateLeafList();
+		GenerateTree();
 		
 		// 3. Create a standard ofstream for output (binary mode)
+		ofstream oStream(_outputFile, std::ios::binary);
 		
 		// 4. Create a bool to use for traversing down the list, and a char to store the character for writing
 		
+		bool traverse;
+		char letter;
+
 		// 5. Create a node pointer for use in traversing the list (start it at the top)
+
+		HuffNode* traversingNode = mRoot;
 		
 		// 6. Go through the compressed file one bit at a time, traversing through the tree
 		//		When you get to a leaf node, write out the value, and go back to the root
 		//	Note: Remember, there may be trailing 0's at the end of the file, so only loop the appropriate number of times
 		
+		while (true)
+		{
+				
+		}
+		
+
 		// 7. Close the streams
+
+		iStream.Close();
+		oStream.close();
 		
 		// 8. Clean up the dynamic memory by clearing the tree
 		
+		delete traversingNode;
+
 	}
 };
 
