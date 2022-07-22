@@ -179,7 +179,7 @@ class Huffman {
 		letterStream.close();
 
 		//cleaning up memory
-		delete letterHolder;
+		delete[] letterHolder;
 
 	}
 
@@ -369,7 +369,9 @@ class Huffman {
 
 		oStream.Close();
 		letterStream.close();
-		delete letterHolder;
+		
+
+		delete[] letterHolder;
 		
 	}
 
@@ -378,47 +380,77 @@ class Huffman {
 	// In:	_outputFile		Where to write the uncompressed data to
 	//
 	// Note: The mFileName will be the compressed file
+
 	void Decompress(const char* _outputFile) {
 		// 1. Create a BitIStream and read the frequency table
+		BitIfstream iStream(mFileName.c_str(), (char*)mFrequencyTable,1024);
 
-		
-
-		BitIfstream iStream(mFileName.c_str(), (char*)mFrequencyTable, 1024);
-		
 		// 2. Create the leaf list and tree (in this order)
 		GenerateLeafList();
 		GenerateTree();
 		
+
 		// 3. Create a standard ofstream for output (binary mode)
 		ofstream oStream(_outputFile, std::ios::binary);
 		
-		// 4. Create a bool to use for traversing down the list, and a char to store the character for writing
-		
-		bool traverse;
+		// 4. Create a bool to use for traversing down the list, and a char to store the character for writing		
+		bool goRight = false;
 		char letter;
-
 		// 5. Create a node pointer for use in traversing the list (start it at the top)
-
 		HuffNode* traversingNode = mRoot;
-		
+
 		// 6. Go through the compressed file one bit at a time, traversing through the tree
 		//		When you get to a leaf node, write out the value, and go back to the root
 		//	Note: Remember, there may be trailing 0's at the end of the file, so only loop the appropriate number of times
-		
-		while (true)
+
+		int length = 0;
+
+		for (int i = 0; i < 256; i++)		//getting length of file in bits
 		{
-				
+			length += mFrequencyTable[i];
 		}
 		
 
-		// 7. Close the streams
+		for (int i = 0; i < length; i++)		//going the length of the file in bits
+		{
+			iStream >> goRight;			
 
+			if (goRight)
+			{
+				if (traversingNode->value == -1)
+				{
+					traversingNode = traversingNode->right;
+				}
+				else if (traversingNode->value != -1)
+				{
+					letter = static_cast<char>(traversingNode->value);
+					oStream << letter;
+					traversingNode = mRoot;
+				}
+			}
+			else
+			{
+				if (traversingNode->value == -1)
+				{
+					traversingNode = traversingNode->left;
+				}
+				else if (traversingNode->value != -1)
+				{
+
+					letter = static_cast<char>(traversingNode->value);
+
+					oStream << letter;
+					traversingNode = mRoot;
+				}
+			}			
+		}	
+
+		// 7. Close the streams
 		iStream.Close();
 		oStream.close();
 		
-		// 8. Clean up the dynamic memory by clearing the tree
-		
-		delete traversingNode;
+		// 8. Clean up the dynamic memory by clearing the tree		
+		ClearTree();
 
 	}
 };
